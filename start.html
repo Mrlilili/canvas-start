@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="myCanvas" height="500px" width="500px">
+    您的浏览器不支持canvas！
+</canvas>
+<script>
+    var canvas = document.getElementById('myCanvas');
+    if (canvas.getContext) {
+        var ctx = canvas.getContext('2d');
+        //绘制路径
+        ctx.beginPath(); // 开始路径绘制
+        ctx.moveTo(20, 20); // 设置路径起点，坐标为(20,20)
+        ctx.lineTo(200, 20); // 绘制一条到(200,20)的直线
+        ctx.lineWidth = 1.0; // 设置线宽
+        ctx.strokeStyle = "#CC0000"; // 设置线的颜色
+        ctx.stroke(); // 进行线的着色，这时整条线才变得可见
+        //绘制矩形
+        ctx.fillStyle = 'yellow';
+        ctx.fillRect(22, 22, 100, 100);
+        //绘制空心矩形
+        ctx.strokeRect(150, 50, 50, 50);
+        //清除摸个矩形区域的内容
+        ctx.clearRect(50, 50, 50, 50);
+
+        //绘制文本
+        ctx.font = 'bold 20px Arial';//设置字体
+        ctx.textAlign = 'left';//设置对齐方式
+        ctx.fillStyle = 'red';//设置字体颜色
+        ctx.fillText('hello!', 0, 20);// 设置字体内容，以及在画布上的位置
+        ctx.strokeText('Hello!', 10, 100)// 绘制空心字
+
+        //绘制实心圆形
+        ctx.beginPath();
+        ctx.arc(60, 60, 20, 0, Math.PI * 2, true);
+        ctx.fillStyle = 'black';
+        ctx.fill();
+
+        //绘制空心圆
+        ctx.beginPath();
+        ctx.arc(60, 60, 50, 0, Math.PI*2, true);
+        ctx.lineWidth = 1.0;
+        ctx.strokeStyle = 'red';
+        ctx.stroke();
+
+
+
+
+    }
+
+</script>
+</body>
+</html>
