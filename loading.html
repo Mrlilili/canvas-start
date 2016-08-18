@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百分比加载</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="background: #000;"></canvas>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById('canvas'),
+                context = canvas.getContext('2d'),
+                centerX = canvas.width / 2,
+                centerY = canvas.height / 2,
+                rad = Math.PI * 2 / 100,
+                speed = 0.1;
+
+        function whiteCircle() {
+            context.save();
+            context.beginPath();
+            context.strokeStyle = 'white';
+            context.arc(centerX, centerY, 100, 0, Math.PI * 2, false);
+            context.stroke();
+            context.closePath();
+            context.restore();
+        }
+
+        whiteCircle()
+
+    }
+</script>
+</body>
+</html>
