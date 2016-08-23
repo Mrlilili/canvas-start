@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width='500' height="500" style="background:#000">
+    <p>you browser not support canvas!
+    <p>
+</canvas>
+<script src='./utils.js'></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById('canvas'),
+                mouse = utils.captureMouse(canvas);
+//关于canvas的鼠标位置获取的方法还可以应用它自身的一个方法getBoundingClientRect，这里做一个简单介绍，你可以使用，但本系列文章主要使用上面这种更具广泛性的方法。具体代码可以参考如下：
+
+//console.log(canvas.getBoundingClientRect());
+        canvas.addEventListener('mousedown', function (event) {
+            console.log("x:" + mouse.x + ",y:" + mouse.y);
+        });
+    }
+</script>
+</body>
+</html>
