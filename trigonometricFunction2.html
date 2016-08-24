@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" height="500" width="500" style="background: #ccc"></canvas>
+
+<script>
+    function Ball(radius, color) {
+        this.x = 100;
+        this.y = 100;
+        this.radius = radius;
+        this.color = color;
+    }
+    Ball.prototype.draw = function (context) {
+        context.save();
+        context.beginPath();
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true)
+        context.fillStyle = 'black';
+        context.fill();
+        context.restore();
+    }
+
+    window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        var ball = new Ball(2, 'red')
+        ball.x = canvas.width / 2;
+        ball.y = canvas.height / 2;
+        ball.draw(context);
+        var angle = 0,
+                range = 80,
+                xspeed = 1,
+                yspeed = 0.05; //振幅
+
+        (function drawFram() {
+            window.requestAnimationFrame(drawFram, canvas);
+//            context.clearRect(0, 0, canvas.width, canvas.height);
+//平滑运动
+//            ball.y += 1;
+//            ball.x = canvas.width / 2 + Math.sin(angle) * range; //
+//            angle += 0.1;
+//线性运动
+
+//
+//            ball.x += xspeed; //水平，沿x轴方向水平运动
+//
+//            if (ball.x > canvas.width + ball.radius) {
+//                ball.x = -ball.radius;
+//            }
+//            //垂直， 由于angle角度没发生变化，所以纵坐标保持不变
+//            ball.y = canvas.height / 2 + Math.sin(angle) * range;
+
+            // angle += 0.05; //取消注释看看发生了什么？
+// 其它1
+            //ball.x = canvas.width/2 + range * (5 * Math.cos(angle) - Math.cos(6 * angle));
+            //ball.y = canvas.height/2 + range * (3 * Math.sin(angle) - Math.sin(4 * angle));
+//其它2
+            //ball.x = canvas.width / 2 + range * Math.cos(angle);
+            //ball.y = canvas.height / 2 + range * Math.sin(angle);
+
+
+            ball.draw(context);
+        })();
+
+    }
+</script>
+</body>
+</html>

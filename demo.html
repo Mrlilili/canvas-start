@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="background:#000009;">
+    your browser not support canvas!
+</canvas>
+<script src="./utils.js"></script>
+<script src="./ball.js"></script>
+<script>
+    //平滑运动
+    //    window.onload = function(){
+    //        var canvas = document.getElementById("canvas");
+    //        var context = canvas.getContext("2d");
+    //
+    //        var ball = new Ball();
+    //        ball.x = canvas.width/2;
+    //        ball.y = canvas.height/2;
+    //
+    //        var angle = 0,
+    //                range = 50; //振幅
+    //
+    //        (function drawFram(){
+    //            window.requestAnimationFrame(drawFram,canvas);
+    //            context.clearRect(0,0,canvas.width,canvas.height);
+    //
+    //            ball.x = canvas.width/2 + Math.sin(angle)*range; //核心
+    //            angle += 0.1;
+    //
+    //            ball.draw(context);
+    //        })();
+    //    }
+
+
+    //脉冲运动
+    //window.onload = function(){
+    //    var canvas = document.getElementById('canvas');
+    //    var context  = canvas.getContext('2d');
+    //
+    //    var angle = 0,
+    //            range = 0.5,
+    //            speed = 0.05,
+    //            centerScale = 1;
+    //
+    //    var ball = new Ball();
+    //    ball.x = canvas.width/2;
+    //    ball.y = canvas.height/2;
+    //
+    //    (function drawFrame(){
+    //        window.requestAnimationFrame(drawFrame,canvas);
+    //        context.clearRect(0,0,canvas.width,canvas.height);
+    //
+    //        //sin值的变化，导致 ball.scaleX ， ball.scaleY属性变化
+    //        ball.scaleX = ball.scaleY = centerScale + Math.sin(angle)*range;
+    //        angle += speed;
+    //
+    //        ball.draw(context);
+    //    })();
+    //}
+
+    //正圆运动
+    //    window.onload = function () {
+    //        var canvas = document.getElementById('canvas'),
+    //                context = canvas.getContext('2d');
+    //
+    //        var ball = new Ball();
+    //
+    //        var angle = 0, // 旋转的角度
+    //                centerX = canvas.width / 2,
+    //                centerY = canvas.height / 2,
+    //                radius = 100, // 定义半径
+    //                speed = 0.05; // 每帧旋转角度的增加值
+    //
+    //        (function drawFrame() {
+    //            window.requestAnimationFrame(drawFrame, canvas);
+    //            context.clearRect(0, 0, canvas.width, canvas.height);
+    //
+    //            //centerX, centerY 的作用是让球绕画布中心旋转
+    //            ball.x = centerX + Math.sin(angle) * radius;
+    //            ball.y = centerY + Math.cos(angle) * radius;
+    //
+    //            //角度增加
+    //            angle += speed;
+    //            ball.draw(context);
+    //        }());
+    //    }
+    //线性运动
+    //    window.onload = function () {
+    //        var canvas = document.getElementById('canvas'),
+    //                context = canvas.getContext('2d');
+    //        var angle = 0,
+    //                range = 50,
+    //                xspeed = 1,
+    //                yspeed = 0.05;
+    //
+    //        var ball = new Ball();
+    //
+    //        (function drawFrame() {
+    //            window.requestAnimationFrame(drawFrame, canvas);
+    //            context.clearRect(0, 0, canvas.width, canvas.height);
+    //
+    //            ball.x += xspeed; //水平，沿x轴方向水平运动
+    //
+    //            if (ball.x > canvas.width + ball.radius) {
+    //                ball.x = -ball.radius;
+    //            }
+    //            //垂直， 由于angle角度没发生变化，所以纵坐标保持不变
+    //            ball.y = canvas.height / 2 + Math.sin(angle) * range;
+    //
+    //            // angle += 0.05; //取消注释看看发生了什么？
+    //            ball.draw(context);
+    //        })();
+    //    }
+
+    //椭圆运动
+    //    window.onload = function(){
+    //        var canvas = document.getElementById('canvas');
+    //        var context = canvas.getContext('2d');
+    //        var ball = new Ball();
+    //
+    //        var centerX = canvas.width/2,
+    //                centerY = canvas.height/2,
+    //                angle = 0,
+    //                radiusX = 50,
+    //                radiusY = 100,
+    //                speed = 0.05;
+    //
+    //        ball.x = centerX;
+    //        ball.y = centerY;
+    //
+    //        (function drawFrame(){
+    //            window.requestAnimationFrame(drawFrame,canvas);
+    //            context.clearRect(0,0,canvas.width,canvas.height);
+    //
+    //            //当radius的值相等时为圆周运动
+    //            //当radius的值不想等是为椭圆运动
+    //            ball.x = centerX + Math.sin(angle)*radiusX; //radiusX = 50
+    //            ball.y = centerY + Math.cos(angle)*radiusY; //radiusY = 100
+    //            angle += speed;
+    //
+    //            ball.draw(context);
+    //        })();
+    //    }
+
+
+    //两点之间的距离
+    window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        var log = document.getElementById('log');
+        var mouse = utils.captureMouse(canvas);
+        var context = canvas.getContext('2d');
+
+        //中心位置创建一个方块
+        var rect = {
+            x: canvas.width / 2,
+            y: canvas.height / 2
+        };
+
+        (function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            var dx = mouse.x - rect.x;
+            var dy = mouse.y - rect.y;
+            var dis = Math.sqrt(dx * dx + dy * dy);
+
+            //画方块
+            context.fillStyle = '#ffffff';
+            context.fillRect(rect.x - 2, rect.y - 2, 4, 4);
+            //画线
+            context.save();
+            context.strokeStyle = '#ffffff';
+            context.beginPath()
+            context.moveTo(rect.x, rect.y);
+            context.lineTo(mouse.x, mouse.y);
+            context.closePath();
+            context.stroke();
+            context.restore();
+            //显示距离
+            log.style.left = (mouse.x + rect.x) / 2 + 'px';
+            log.style.top = (mouse.y + rect.y) / 2 + 'px';
+            log.innerHTML = dis;
+        })();
+    }
+</script>
+</body>
+</html>
