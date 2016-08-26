@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500" style="background:#000;">
+    your browser not support canvas
+</canvas>
+<script src="ball.js"></script>
+<script src="utils.js"></script>
+<script>
+    window.onload = function(){
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+
+        var ball = new Ball();
+        ball.radius = 5;
+        ball.x = canvas.width/4;
+        ball.y = canvas.height/4;
+        var speed = 5;
+        var angle = 30;
+        //动画循环中
+        (function drawFrame(){
+            window.requestAnimationFrame(drawFrame, canvas);
+//            context.clearRect(0, 0, canvas.width, canvas.height);
+            var vx = Math.cos(angle*Math.PI/180)*speed
+            var vy = Math.sin(angle*Math.PI/180)*speed
+            ball.x += vx; // 在每一帧中都让小球的位置加上速度
+            ball.y += vy; // 在每一帧中都让小球的位置加上速度
+            ball.draw(context);
+
+        }());
+    }
+</script>
+</body>
+</html>

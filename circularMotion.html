@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" height="500" width="500" style="background: blue"></canvas>
+<script>
+    function Triangle() {
+        this.x = 0;
+        this.y = 0;
+        this.rotation = 0;
+        this.color = 'red';
+    }
+
+    Triangle.prototype.draw = function (ctx) {
+        ctx.save();
+        ctx.translate(this.x, this.y); //将坐标移到this.x 和 this.y
+        ctx.rotate(this.rotation); //设置旋转角度
+        ctx.lineWidth = 5;  //设置线宽
+        ctx.fillStyle = this.color; //设置填充色
+        ctx.strokeStyle = 'green'
+        ctx.beginPath();  //路径开始
+        ctx.moveTo(0, 0);
+        ctx.lineTo(100, 0);
+        ctx.lineTo(100, -50);
+        ctx.closePath(); //路径闭合
+        ctx.stroke(); //描边
+        ctx.fill(); //填充
+        ctx.restore();
+    }
+
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    var t = new Triangle();
+    t.x = canvas.width / 2;
+    t.y = canvas.height / 2;
+    var x = .1;
+    setInterval(function(){
+//        setTimeout(function(){
+//        ctx.clearRect(0,0,canvas.height,canvas.height)
+        t.rotation +=x;
+        t.draw(ctx);
+    },1)
+
+</script>
+</body>
+</html>

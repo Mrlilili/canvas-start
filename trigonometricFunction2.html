@@ -9,42 +9,57 @@
 
 <script>
     function Ball(radius, color) {
-        this.x = 100;
-        this.y = 100;
+        this.x = 0;
+        this.y = 0;
         this.radius = radius;
         this.color = color;
+        this.scaleX = 1;
+        this.scaleY = 1;
     }
     Ball.prototype.draw = function (context) {
+
         context.save();
+        context.translate(this.x, this.y);
+        context.scale(this.scaleX, this.scaleY);
         context.beginPath();
-        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true)
-        context.fillStyle = 'black';
+        context.arc(0, 0, this.radius, 0, Math.PI * 2, true);
+        context.fillStyle = this.color;
         context.fill();
         context.restore();
+
+
     }
 
     window.onload = function () {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
-        var ball = new Ball(2, 'red')
+        var ball = new Ball(1, 'red')
+//        ball.x=0
         ball.x = canvas.width / 2;
+
         ball.y = canvas.height / 2;
+
         ball.draw(context);
-        var angle = 0,
-                range = 80,
+        var centerX = canvas.width / 2,
+                centerY = canvas.height / 2, angle = 0,
+                range = 4,
                 xspeed = 1,
-                yspeed = 0.05; //振幅
+                yspeed = 0.05,
+                centerScale = 1,
+                speed = 0.05,
+                radiusX = 150,
+                radiusY = 50 ; //振幅
 
         (function drawFram() {
             window.requestAnimationFrame(drawFram, canvas);
 //            context.clearRect(0, 0, canvas.width, canvas.height);
 //平滑运动
-//            ball.y += 1;
-//            ball.x = canvas.width / 2 + Math.sin(angle) * range; //
+//            ball.x += 2;
+//            ball.y = canvas.width / 2 + Math.sin(angle) * range; //
 //            angle += 0.1;
 //线性运动
 
-//
+
 //            ball.x += xspeed; //水平，沿x轴方向水平运动
 //
 //            if (ball.x > canvas.width + ball.radius) {
@@ -52,9 +67,26 @@
 //            }
 //            //垂直， 由于angle角度没发生变化，所以纵坐标保持不变
 //            ball.y = canvas.height / 2 + Math.sin(angle) * range;
+//
+//             //angle += 0.05; //取消注释看看发生了什么？
 
-            // angle += 0.05; //取消注释看看发生了什么？
+//脉冲动画
+//            ball.x += .5;
+//            ball.scaleX = ball.scaleY = centerScale + Math.sin(angle) * range;
+//            angle += speed;
+//正圆运动
+//            ball.x = canvas.width / 2 + Math.cos(angle) * 100;
+//            ball.y = canvas.height / 2 + Math.sin(angle) * 100;
+//
+//            angle += speed;
+//椭圆运动
+            ball.x = centerX + Math.sin(angle) * radiusX; //radiusX = 50
+            ball.y = centerY + Math.cos(angle) * radiusY; //radiusY = 100
+            angle += speed;
+
+
 // 其它1
+
             //ball.x = canvas.width/2 + range * (5 * Math.cos(angle) - Math.cos(6 * angle));
             //ball.y = canvas.height/2 + range * (3 * Math.sin(angle) - Math.sin(4 * angle));
 //其它2

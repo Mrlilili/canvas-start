@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" style="background:#000;" width="1000" height="1000">
+    you browser not support canvas
+</canvas>
+<script src="./arrow.js"></script>
+<script src="./ball.js"></script>
+<script src="./utils.js"></script>
+<script>
+    window.onload = function () {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        var ballArray = new Array(100);
+        for (var i = 0; i < ballArray.length; i++) {
+            ballArray[i] = new Ball();
+            ballArray[i].x = Math.random() * canvas.width;
+            ballArray[i].y = Math.random() * canvas.height;
+        }
+//        console.log(ballArray);
+//        var ball = new Ball();
+//        ball.x = Math.random() * canvas.width;
+//        ball.y = Math.random() * canvas.height;
+        var mouse = utils.captureMouse(canvas);
+        var angle = 0, speed =3; //定义速度和方向
+
+        (function drawFrame() {
+            window.requestAnimationFrame(drawFrame, canvas);
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            for(var i = 0;i<ballArray.length;i++){
+                var dx = mouse.x - ballArray[i].x;
+                var dy = mouse.y - ballArray[i].y;
+
+                angle = Math.atan2(dy, dx);
+
+                var vx = Math.cos(angle) * speed.toFixed(0);
+                var vy = Math.sin(angle) * speed.toFixed(0);
+
+                ballArray[i].x += vx;
+                ballArray[i].y += vy;
+
+                ballArray[i].draw(context);
+            }
+//            //这点看不懂的话，就去复习一下吧，我们要用它来计算角度
+//            var dx = mouse.x - ball.x;
+//            var dy = mouse.y - ball.y;
+//            //得到角度值
+//            angle = Math.atan2(dy, dx);
+////将速度分解
+//            var vx = Math.cos(angle) * speed.toFixed(0);
+//            var vy = Math.sin(angle) * speed.toFixed(0);
+////移
+//            ball.x += vx;
+//            ball.y += vy;
+//            //绘制
+//            ball.draw(context);
+        })()
+
+    }
+</script>
+</body>
+</html>

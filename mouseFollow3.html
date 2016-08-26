@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" height="500" width="500" style="background: #cccccc"></canvas>
+<script src="utils.js"></script>
+<script src="arrow.js"></script>
+<script>
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+
+    var arrow = new Arrow();
+    arrow.x = canvas.width/2;
+    arrow.y = canvas.height/2;
+
+    var vr = 30, speed = 2;
+
+    (function drawFrame(){
+        window.requestAnimationFrame(drawFrame, canvas);
+        context.clearRect(0,0,canvas.width,canvas.height);
+
+
+        //通过rotation来改变角度值
+        arrow.rotation = vr*Math.PI/180;
+        //分解
+        arrow.x += Math.cos(arrow.rotation)*speed;
+        arrow.y += Math.sin(arrow.rotation)*speed;
+
+        arrow.draw(context);
+    }())
+
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" height="500" width="500" style="background: #cccccc"></canvas>
+<script src="utils.js"></script>
+<script src="arrow.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var arrow = new Arrow();
+    var mouse = utils.captureMouse(canvas);
+    arrow.x = canvas.width / 2;
+    arrow.y = canvas.height / 2;
+    var speed = 5;
+
+    (function drawFrame() {
+        window.requestAnimationFrame(drawFrame);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        var dx = mouse.x - arrow.x;
+        var dy = mouse.y - arrow.y;
+        var angle = Math.atan2(dy, dx);
+        arrow.rotation = angle;
+        var vx = Math.cos(angle) * speed;
+        var vy = Math.sin(angle) * speed;
+        arrow.x += vx;
+        arrow.y += vy;
+
+        arrow.draw(context)
+    })()
+
+</script>
+</body>
+</html>

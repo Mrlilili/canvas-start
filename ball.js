@@ -1,5 +1,5 @@
 function Ball(radius,color){
-    if(radius === undefined) {radius = 40;}
+    if(radius === undefined) {radius = 1;}
     if(color === undefined){color = '#00ff00';}
     this.x = 0;
     this.y = 0;
