@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" height="500" width="500" style="background: black"></canvas>
+<script>
+    function SnakerBody(length) {
+        if (length == undefined) {
+            length = 10;
+        }
+        this.length = length;
+        this.x = 0;
+        this.y = 0;
+        this.color = 'red';
+    }
+    SnakerBody.prototype.draw = function (context) {
+        context.save();
+        context.fillStyle = 'yellow';
+        context.fillRect(this.x, this.y, this.length, 10);
+        context.restore();
+    }
+    function Food(x, y) {
+        this.radius = 3;
+        this.color = '#ccc';
+        this.x = x;
+        this.y = y;
+    }
+    Food.prototype.draw = function (context) {
+        context.save();
+        context.beginPath();
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, true);
+        context.closePath();
+        context.fillStyle = this.color;
+        context.fill();
+        context.restore();
+    }
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var snaker = new SnakerBody();
+    var food = new Food(Math.random() * canvas.width, Math.random() * canvas.height);
+
+    snaker.x = canvas.width / 2;
+    snaker.y = canvas.height / 2;
+    var speed = 1, vx = speed, vy = 0, score = 0;
+    window.addEventListener('keydown', function (e) {
+        switch (e.keyCode) {
+            case 38://up
+                vy = speed * -1;
+                vx = 0;
+                break;
+            case 40://down
+                vy = speed;
+                vx = 0;
+                break;
+            case 37://left
+                vy = 0;
+                vx = speed * -1;
+                break;
+            case 39://right
+                vy = 0;
+                vx = speed;
+                break;
+        }
+    });
+
+    (function drawframe() {
+        requestAnimationFrame(drawframe);
+        context.clearRect(0, 0, canvas.height, canvas.width);
+        snaker.x += vx;
+        snaker.y += vy;
+//        console.log(snaker.length + canvas.width);
+        if (snaker.length + snaker.x > canvas.width || snaker.length + snaker.y > canvas.height || snaker.x < 0 || snaker.y < 0) {
+//            alert('over!得分:' + score);
+//            location.reload()
+//            food.x = Math.random()*canvas.width;
+//            food.y = Math.random()*canvas.height;
+        }
+//        console.log(snaker.x - food.x, snaker.y - food.y);
+        if (Math.abs(snaker.x - food.x) < 5 && Math.abs(snaker.y - food.y) < 5) {
+            food.x = Math.random() * canvas.width;
+            food.y = Math.random() * canvas.height;
+            snaker.length += 5;
+            console.log(score += 1);
+        }
+        food.draw(context)
+        snaker.draw(context);
+    })()
+setTimeout(console.log.bind(console,'adsf'))
+
+</script>
+</body>
+</html>

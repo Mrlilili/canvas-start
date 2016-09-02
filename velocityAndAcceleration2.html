@@ -24,57 +24,57 @@
     //    })()
 
     //斜线加速运动
-    //    var canvas = document.getElementById('canvas');
-    //    var context = canvas.getContext('2d');
-    //    var ball = new Ball(20);
-    //    ball.x = canvas.width / 6;
-    //    ball.y = canvas.height / 6;
-    //    var vx = 0, vy = 0, //初始速度为0
-    //            ax = 0, ay = 0, //分加速度为0
-    //            angle = 30, //运动方向
-    //            aTotal = 0.05; // 定义加速度的大小
-    //    ax = Math.cos(angle * Math.PI / 180) * aTotal;
-    //    ay = Math.sin(angle * Math.PI / 180) * aTotal;
-    //    (function drawFrame() {
-    //        window.requestAnimationFrame(drawFrame);
-    //        context.clearRect(0, 0, canvas.height, canvas.width)
-    //        //分加速度分解
-    //
-    //        console.log(ax, ay);
-    //        vx += ax;
-    //        vy += ay;
-    //        ball.x += vx;
-    //        ball.y += vy;
-    //        ball.draw(context);
-    //    })()
+//        var canvas = document.getElementById('canvas');
+//        var context = canvas.getContext('2d');
+//        var ball = new Ball(20);
+//        ball.x = canvas.width / 6;
+//        ball.y = canvas.height / 6;
+//        var vx = 0, vy = 0, //初始速度为0
+//                ax = 0, ay = 0, //分加速度为0
+//                angle = 30, //运动方向
+//                aTotal = 0.05; // 定义加速度的大小
+//        ax = Math.cos(angle * Math.PI / 180) * aTotal;
+//        ay = Math.sin(angle * Math.PI / 180) * aTotal;
+//        (function drawFrame() {
+//            window.requestAnimationFrame(drawFrame);
+//            context.clearRect(0, 0, canvas.height, canvas.width)
+//            //分加速度分解
+//
+//            console.log(ax, ay);
+//            vx += ax;
+//            vy += ay;
+//            ball.x += vx;
+//            ball.y += vy;
+//            ball.draw(context);
+//        })()
 
     //重力加速度
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
-
-    var ball = new Ball(20, "red");
-    ball.x = canvas.width / 2
-    ball.y = canvas.height / 2 - 200;
-
-    var vy = 0,  //初始速度
-            gravity = 0.5, //定义重力加速度
-            bounce = -.8; //定义反弹系数
-
-    //碰撞检测
-
-
-    (function drawFram() {
-        requestAnimationFrame(drawFram)
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        vy += gravity;
-        ball.y += vy;
-        if (ball.radius + ball.y > canvas.height) {
-            ball.y = canvas.height - ball.radius;
-            vy *= bounce;
-        }
-
-        ball.draw(context);
-    })();
+//    var canvas = document.getElementById('canvas');
+//    var context = canvas.getContext('2d');
+//
+//    var ball = new Ball(20, "red");
+//    ball.x = canvas.width / 2
+//    ball.y = canvas.height / 2 - 200;
+//
+//    var vy = 0,  //初始速度
+//            gravity = 0.5, //定义重力加速度
+//            bounce = -.8; //定义反弹系数
+//
+//    //碰撞检测
+//
+//
+//    (function drawFram() {
+//        requestAnimationFrame(drawFram)
+//        context.clearRect(0, 0, canvas.width, canvas.height);
+//        vy += gravity;
+//        ball.y += vy;
+//        if (ball.radius + ball.y > canvas.height) {
+//            ball.y = canvas.height - ball.radius;
+//            vy *= bounce;
+//        }
+//
+//        ball.draw(context);
+//    })();
 
 </script>
 </body>

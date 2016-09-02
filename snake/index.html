@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+
+
+    <title>tān chī shé</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #mask {
+            text-align: center;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, .8);
+            color: #fff;
+        }
+
+        #mask .danmuBox {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #mask .danmuItem {
+            position: absolute;
+            white-space: nowrap;
+            font-weight: bolder;
+            font-size: 28px;
+
+        }
+
+        #mask .danmuItem.speed1 {
+            animation: moveDanmu 16s;
+
+            animation-fill-mode: forwards;
+            color: blue;
+        }
+
+        #mask .danmuItem.speed2 {
+            animation: moveDanmu 15s;
+            color: red;
+            animation-fill-mode: forwards;
+        }
+
+        #mask .danmuItem.speed3 {
+            animation: moveDanmu 18s;
+            color: yellow;
+            animation-fill-mode: forwards;
+        }
+
+        #mask .danmuItem.speed4 {
+            animation: moveDanmu 20s;
+            color: yellow;
+            animation-fill-mode: forwards;
+        }
+
+        #mask .danmuItem.speed5 {
+            animation: moveDanmu 18s;
+            color: red;
+            animation-fill-mode: forwards;
+        }
+
+        #mask .danmuItem.speed6 {
+            animation: moveDanmu 16s;
+            color: blue;
+            animation-fill-mode: forwards;
+        }
+
+        #mask .danmuItem.speed7 {
+            animation: moveDanmu 17s;
+            color: blue;
+            animation-fill-mode: forwards;
+        }
+
+        #mask .danmuItem.speed8 {
+            animation: moveDanmu 19s;
+            color: red;
+            animation-fill-mode: forwards;
+        }
+
+        #mask .danmuItem.speed9 {
+            animation: moveDanmu 15s;
+            color: yellow;
+            animation-fill-mode: forwards;
+        }
+
+        #mask .danmuItem.speed10 {
+            animation: moveDanmu 14s;
+            color: red;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes moveDanmu {
+            /*from {*/
+            /*transform: translateX(0);*/
+            /*}*/
+            to {
+                /*left: -120%;*/
+                transform: translateX(-800%);
+            }
+        }
+
+        #mask h1 {
+
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div id="mask">
+    <h1>贪吃蛇</h1>
+    <img src="eat.gif" alt="">
+    <img src="eat.gif" alt="">
+    <img src="eat.gif" alt=""><img src="eat.gif" alt="">
+    <img src="eat.gif" alt="">
+    <img src="eat.gif" alt=""><img src="eat.gif" alt="">
+    <img src="eat.gif" alt="">
+    <img src="eat.gif" alt="">
+    <h2>控制方法</h2>
+    <p id="randomColor" style="font-size: 500%;font-weight: bolder;margin: 0">
+        意念控制
+    </p>
+    <p style="font-size: 18px">接下来用意念让它开始</p>
+    <div id="danmuBox"></div>
+</div>
+<canvas id="canvas" style="display:block;background: #ccc;margin: 0 auto;"></canvas>
+
+<!--<div class="btnBox">-->
+
+<!--<div id="up">上</div>-->
+<!--<span class="center">-->
+<!--<div id="left">左</div>-->
+<!--<div id="right">右</div>-->
+<!--</span>-->
+
+<!--<div id="down">下</div>-->
+
+<!--</div>-->
+<script src="snake.js"></script>
+<script src="hammer.js"></script>
+<script src="danmu.js"></script>
+<script>
+    //    var danmu = new Danmu();
+    //    danmu.print(document.getElementById('mask'))
+    //    setInterval(function(){
+    //
+    //        danmu.print(document.getElementById('mask'))
+    //    },1500)
+    //
+    //    setInterval(function(){
+    //        for(var i = 0;i<document.querySelectorAll('.danmuBox').length;i++){
+    //            document.querySelectorAll('.danmuBox')[i].remove();
+    //        }
+    //
+    //
+    //    },20000)
+
+    var danmuPrint = null;
+    var danmuClear =null;
+
+    var getRandomColor = function () {
+        return '#' +
+                (function (color) {
+                    return (color += '0123456789abcdef'[Math.floor(Math.random() * 16)])
+                    && (color.length == 6) ? color : arguments.callee(color);
+                })('');
+    }
+    var colorChange = setInterval(function () {
+        document.getElementById('randomColor').style.color = getRandomColor();
+    }, 50)
+
+    function Food() {
+        this.w = 11;
+        this.h = 11;
+        this.x = 0;
+        this.y = 0;
+        this.color = 'green';
+
+    }
+
+    Food.prototype.draw = function (context) {
+        context.save();
+        context.beginPath();
+        context.fillStyle = this.color;
+        context.rect(this.x, this.y, this.w, this.h)
+        context.fill();
+
+        context.restore();
+    };
+
+
+    var canvas = document.getElementById('canvas');
+    var upBtn = document.getElementById('up');
+    var downBtn = document.getElementById('down');
+    var leftBtn = document.getElementById('left');
+    var rightBtn = document.getElementById('right');
+    var context = canvas.getContext('2d');
+    var snaker = new SnakerBody();
+    var score = 0;
+    canvas.width = window.innerWidth - window.innerWidth % 10;
+    canvas.height = window.innerHeight - window.innerHeight % 10;
+    var food = new Food();
+    food.x = Math.floor(Math.random() * (canvas.width / 10)) * 10;
+    food.y = Math.floor(Math.random() * (canvas.height / 10)) * 10;
+    console.log(food.x, food.y);
+    snaker.x = canvas.width / 2;
+    snaker.y = canvas.height / 2;
+    snaker.length = 5;
+
+
+    var hammertime = new Hammer(canvas);
+    hammertime.get('swipe').set({direction: Hammer.DIRECTION_ALL});
+    hammertime.on("swipeleft swiperight swipeup swipedown", function (ev) {
+        console.log(ev.type);
+        switch (ev.type) {
+            case 'swipeup'://up
+                snaker.direction = 'up';
+                break;
+            case 'swipedown'://down
+                snaker.direction = 'down'
+                break;
+            case 'swipeleft'://left
+                snaker.direction = 'left'
+                break;
+            case 'swiperight'://right
+                snaker.direction = 'right'
+                break;
+        }
+        //        context.clearRect(0, 0, canvas.height, canvas.width);
+        //        snaker.move(context)
+        drawframe();
+    });
+    var accelerateTimmer = null;
+    hammertime.on('press', function () {
+        accelerateTimmer = setInterval(function () {
+            drawframe()
+        }, 30)
+
+    }).on('pressup', function () {
+        clearInterval(accelerateTimmer)
+    })
+
+    for (var i = 0; i < snaker.length; i++) {
+        snaker.snakeBodyArray[i] = {
+            x: snaker.x - 10 * i, y: snaker.y
+        }
+    }
+
+
+    var speed = 1, vx = speed, vy = 0, score = 0;
+    window.addEventListener('keydown', function (e) {
+        switch (e.keyCode) {
+            case 38://up
+                snaker.direction = 'up';
+                break;
+            case 40://down
+                snaker.direction = 'down'
+                break;
+            case 37://left
+                snaker.direction = 'left'
+                break;
+            case 39://right
+                snaker.direction = 'right'
+                break;
+        }
+//        context.clearRect(0, 0, canvas.height, canvas.width);
+//        snaker.move(context)
+        drawframe();
+    });
+
+
+    function drawframe() {
+//        requestAnimationFrame(drawframe);
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        food.draw(context);
+        snaker.move(context);
+//        console.log(snaker.snakeBodyArray[0].x - food.x);
+
+        if (Math.abs(snaker.snakeBodyArray[0].x - food.x) < 8 && Math.abs(snaker.snakeBodyArray[0].y - food.y) < 8) {
+            food.x = Math.floor(Math.random() * (canvas.width / 10)) * 10;
+            food.y = Math.floor(Math.random() * (canvas.height / 10)) * 10;
+            score += 1;
+            snaker.eat();
+        }
+//        console.log(snaker.snakeBodyArray[0].x);
+        if (snaker.snakeBodyArray[0].x + 10 > canvas.width || snaker.snakeBodyArray[0].y + 10 > canvas.height || snaker.snakeBodyArray[0].x < 0 || snaker.snakeBodyArray[0].y < 0) {
+            alert('游戏结束！得分:' + score+'积分榜看心情开发')
+            snaker.length = 5;
+            for (var i = 0; i < snaker.length; i++) {
+                snaker.snakeBodyArray[i] = {
+                    x: snaker.x - 10 * i, y: snaker.y
+                }
+            }
+            drawframe()
+        }
+    }
+    drawframe()
+    setTimeout(function () {
+//        document.getElementById('mask').remove();
+//        setInterval(drawframe, 100)
+
+
+        var danmu = new Danmu();
+        danmu.print(document.getElementById('mask'))
+        danmuPrint = setInterval(function () {
+
+            danmu.print(document.getElementById('mask'))
+        }, 2000)
+
+        danmuClear = setInterval(function () {
+            for (var i = 0; i < document.querySelectorAll('.danmuBox').length; i++) {
+                document.querySelectorAll('.danmuBox')[i].remove();
+            }
+
+
+        }, 20000)
+
+
+        document.getElementById('mask').addEventListener('touchend',function(){
+            document.getElementById('mask').remove();
+            clearInterval(colorChange);
+            clearInterval(danmuPrint);
+            clearInterval(danmuClear);
+            setInterval(drawframe, 100)
+        })
+
+
+
+
+
+    }, 8000)
+
+
+
+</script>
+
+<script type='text/javascript'>
+    document.querySelector('body').addEventListener('touchstart', function (ev) {
+        event.preventDefault();
+    });
+</script>
+</body>
+</html>

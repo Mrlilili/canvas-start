@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id="canvas" height="500" width="500" style="background: #ccc"></canvas>
+<script>
+    function Ball() {
+        this.x = 0;
+        this.y = 0;
+        this.radius = 10;
+    }
+    Ball.prototype.draw = function (context) {
+        context.save();
+        context.translate(this.x, this.y);
+//        context.fillStyle = 'red';
+        context.beginPath();
+        context.arc(0, 0, this.radius, 0, Math.PI * 2, false)
+        context.closePath();
+        context.fill();
+        context.restore();
+    }
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var ball = new Ball();
+//    ball.x = canvas.width / 2;
+//    ball.y = canvas.height / 2;
+    var vx = Math.random() * 10 + 5;
+    var vy = Math.random() * 10 + 5;
+    var f = .5;
+    var speed = 0;
+    var angle = 0;
+
+    (function drawFrame() {
+        requestAnimationFrame(drawFrame);
+//        context.clearRect(0, 0, canvas.width, canvas.height)
+        speed = Math.sqrt(vx * vx + vy * vy);
+        angle = Math.atan2(vy, vx);
+        if (speed > f) {
+            speed -= f;
+        } else {
+            speed = 0;
+        }
+        vx = Math.cos(angle) * speed;
+        vy = Math.sin(angle) * speed;
+        ball.x += vx;
+        ball.y += vy;
+        ball.draw(context);
+    })()
+
+
+</script>
+</body>
+</html>

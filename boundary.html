@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0;
+            height: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" height="500" width="500" style="background: #ccc"></canvas>
+<script src="ball.js"></script>
+<script>
+    var getRandomColor = function () {
+        return '#' +
+                (function (color) {
+                    return (color += '0123456789abcdef'[Math.floor(Math.random() * 16)])
+                    && (color.length == 6) ? color : arguments.callee(color);
+                })('');
+    }
+
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var canvasH = canvas.height = window.innerHeight;
+    var canvasW = canvas.width = window.innerWidth;
+    var ballArray = new Array(200);
+    for (var i = 0; i < ballArray.length; i++) {
+        ballArray[i] = new Ball(8000);
+        ballArray[i].id = i;
+        ballArray[i].radius = Math.random() * 30 + 10;
+        ballArray[i].color = getRandomColor();
+        ballArray[i].x = Math.random() * canvasW;
+        ballArray[i].y = Math.random() * canvasH;
+        ballArray[i].vx = Math.random() * 10 - 5;
+        ballArray[i].vy = Math.random() * 10 - 5;
+    }
+    console.log(ballArray);
+
+
+    (function drawFrame() {
+        window.requestAnimationFrame(drawFrame);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        if (ballArray.length != 0) {
+            for (var i = 0; i < ballArray.length; i++) {
+                ballArray[i].x += ballArray[i].vx;
+                ballArray[i].y += ballArray[i].vy;
+//                ballArray[i].color = getRandomColor();//闪瞎模式
+                ballArray[i].draw(context)
+                if (ballArray[i].x - ballArray[i].radius > canvasW || ballArray[i].y - ballArray[i].radius > canvasH || ballArray[i].x + ballArray[i].radius < 0 || ballArray[i].y + ballArray[i].radius < 0) {
+                    ballArray[i].x = canvasW / 2;
+                    ballArray[i].y = canvasH ;
+
+//                    console.log('remove' + ballArray[i].id);
+//                    ballArray.splice(i, 1)
+                }
+
+            }
+        }
+
+
+    })()
+</script>
+</body>
+</html>
