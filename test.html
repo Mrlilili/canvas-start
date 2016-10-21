@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+</head>
+<body>
+<button id="test" onclick="test()">test</button>
+<script>
+    function test() {
+        console.log('click');
+    }
+    setInterval(function () {
+        $('#test').click();
+    }, 1000)
+</script>
+</body>
+</html>

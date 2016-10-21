@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            /*margin: 0;*/
+            /*padding: 0;*/
+        }
+
+        #canvas:active {
+            cursor: default;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" height="500" width="1000" style="background: black"></canvas>
+<script src="ball.js"></script>
+<script>
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var ball = new Ball();
+    var dropState = false;
+    ball.radius = 40;
+    ball.x = canvas.width / 2;
+    ball.y = canvas.height / 2;
+    //    ball.x = ball.y = 0
+    var diffX = 0, diffY = 0;
+    var oldX, oldY, vx, vy;
+    function mouseMove(e) {
+        ball.x = e.x - canvas.offsetLeft - diffX;
+        ball.y = e.y - canvas.offsetTop - diffY;
+//        oldX = e.x, oldY = e.y;
+//        console.log(oldX, oldY);
+    }
+    function mouseDown(e) {
+        dropState = false;
+        diffX = e.x - ball.x - canvas.offsetLeft;
+        diffY = e.y - ball.y - canvas.offsetTop;
+        if (Math.sqrt((e.x - ball.x - canvas.offsetLeft) * (e.x - ball.x - canvas.offsetLeft) + (e.y - ball.y - canvas.offsetTop) * (e.y - ball.y - canvas.offsetTop)) < ball.radius) {
+            oldX = e.x, oldY = e.y;
+//            console.log(e.x, e.y);
+            canvas.addEventListener('mousemove', mouseMove)
+
+
+            canvas.addEventListener('mouseup', function (e) {
+                var newX = e.x;
+                var newY = e.y;
+                vx = ball.x - oldX;
+                vy = ball.y - oldY;
+//        console.log(e.x, e.y);
+//        console.log(oldX, oldY);
+//        console.log(newX, newY);
+                console.log(Math.sqrt((newX - oldX) * (newX - oldX) + (newY - oldY) * (newY - oldY)));
+                canvas.removeEventListener('mousemove', mouseMove)
+                dropState = true;
+            });
+
+        }
+    }
+
+
+    canvas.addEventListener('mousedown', mouseDown);
+
+
+
+    var vy = 0,  //初始速度
+            gravity = 0.5, //定义重力加速度
+            bounce = -0.8; //定义反弹系数
+
+    (function drawFrame() {
+        requestAnimationFrame(drawFrame);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+
+        if (dropState) {
+
+//            vy += gravity;
+//            ball.y += vy;
+//            if (ball.y + ball.radius > canvas.height) {
+//
+//                ball.y = canvas.height - ball.radius;
+//                vy *= bounce;
+//
+//            }
+            console.log(vx, vy);
+
+            var left = canvas.width,
+                    right = 0,
+                    top = 0,
+                    bottom = canvas.height;
+
+            ball.x += vx;
+            vy += gravity;
+            ball.y += vy;
+
+            if (ball.x + ball.radius > left) {
+                vx *= bounce;
+                ball.x = left - ball.radius;
+            } else if (ball.x - ball.radius < right) {
+                vx *= bounce;
+                ball.x = ball.radius;
+            }
+
+            if (ball.y + ball.radius > bottom) {
+                vy *= bounce;
+                ball.y = bottom - ball.radius;
+            } else if (ball.y - ball.radius < top) {
+                vy *= bounce;
+                ball.y = ball.radius;
+            }
+        }
+
+        ball.draw(context);
+    })()
+
+</script>
+</body>
+</html>

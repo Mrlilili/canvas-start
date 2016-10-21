@@ -8,6 +8,10 @@
             /*margin: 0;*/
             /*padding: 0;*/
         }
+
+        #canvas:active {
+            cursor: default;
+        }
     </style>
 </head>
 <body>
@@ -17,36 +21,58 @@
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
     var ball = new Ball();
-    ball.radius = 100;
+    var dropState = false;
+    ball.radius = 40;
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
     //    ball.x = ball.y = 0
+    var diffX = 0, diffY = 0;
+    function mouseMove(e) {
+        ball.x = e.x - canvas.offsetLeft - diffX;
+        ball.y = e.y - canvas.offsetTop - diffY;
+    }
+    function mouseDown(e) {
+        dropState = false;
+        diffX = e.x - ball.x - canvas.offsetLeft;
+        diffY = e.y - ball.y - canvas.offsetTop;
+        if (Math.sqrt((e.x - ball.x - canvas.offsetLeft) * (e.x - ball.x - canvas.offsetLeft) + (e.y - ball.y - canvas.offsetTop) * (e.y - ball.y - canvas.offsetTop)) < ball.radius) {
 
 
-    canvas.addEventListener('mousedown', function (e) {
-
-        if (Math.sqrt((e.x - ball.x - canvas.offsetLeft) * (e.x - ball.x - canvas.offsetLeft) + (e.y - ball.y - canvas.offsetTop) * (e.y - ball.y - canvas.offsetTop)) < 100) {
-            canvas.addEventListener('mousemove', function (e) {
-                ball.x = e.x - canvas.offsetLeft;
-                ball.y = e.y - canvas.offsetTop;
-            })
+            canvas.addEventListener('mousemove', mouseMove)
         }
+    }
 
-//        ball.x = 100;
-//        ball.y = 100;
+
+    canvas.addEventListener('mousedown', mouseDown);
+    canvas.addEventListener('mouseup', function () {
+        canvas.removeEventListener('mousemove', mouseMove)
+        dropState = true;
     });
-    canvas.addEventListener('mouseup',function(){
-        canvas.removeEventListener('mousemove')
-    })
     //
     //    var ballMove = function () {
     //
     //    };
 
+    var vy = 0,  //初始速度
+            gravity = 0.5, //定义重力加速度
+            bounce = -0.8; //定义反弹系数
 
     (function drawFrame() {
         requestAnimationFrame(drawFrame);
-        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.clearRect(0, 0, canvas.width, canvas.height);
+//        console.log(status);
+        if (dropState) {
+
+            vy += gravity;
+            ball.y += vy;
+            if (ball.y + ball.radius > canvas.height) {
+
+                ball.y = canvas.height - ball.radius;
+                vy *= bounce;
+
+            }
+        }
+
         ball.draw(context);
     })()
 

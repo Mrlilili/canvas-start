@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    navigator.getBattery().then(function (battery) {
+        document.write(
+                "Battery charging? " + (battery.charging ? "Yes" : "No")
+                + "Battery level: " + battery.level * 100 + "%<br>"
+                + "Battery charging time: " + battery.chargingTime + " seconds<br>"
+                + "Battery discharging time: " + battery.dischargingTime + " seconds<br>"
+        )
+
+
+        battery.addEventListener('chargingchange', function () {
+            document.write(
+                    "Battery charging? " + (battery.charging ? "Yes" : "No")
+                    + "Battery level: " + battery.level * 100 + "%<br>"
+                    + "Battery charging time: " + battery.chargingTime + " seconds<br>"
+                    + "Battery discharging time: " + battery.dischargingTime + " seconds<br>"
+                    + "Battery charging? " + (battery.charging ? "Yes" : "No")
+            )
+
+        });
+
+        battery.addEventListener('levelchange', function () {
+            document.write(
+                    "Battery charging? " + (battery.charging ? "Yes" : "No")
+                    + "Battery level: " + battery.level * 100 + "%<br>"
+                    + "Battery charging time: " + battery.chargingTime + " seconds<br>"
+                    + "Battery discharging time: " + battery.dischargingTime + " seconds<br>"
+                    + "Battery level: " + battery.level * 100 + "%"
+            )
+
+        });
+
+        battery.addEventListener('chargingtimechange', function () {
+            document.write(
+                    "Battery charging? " + (battery.charging ? "Yes" : "No")
+                    + "Battery level: " + battery.level * 100 + "%<br>"
+                    + "Battery charging time: " + battery.chargingTime + " seconds<br>"
+                    + "Battery discharging time: " + battery.dischargingTime + " seconds<br>"
+                    + "Battery charging time: " + battery.chargingTime + " seconds"
+            )
+
+        });
+
+        battery.addEventListener('dischargingtimechange', function () {
+            document.write(
+                    "Battery charging? " + (battery.charging ? "Yes" : "No")
+                    + "Battery level: " + battery.level * 100 + "%<br>"
+                    + "Battery charging time: " + battery.chargingTime + " seconds<br>"
+                    + "Battery discharging time: " + battery.dischargingTime + " seconds<br>"
+                    + "Battery discharging time: " + battery.dischargingTime + " seconds"
+            )
+
+        });
+
+    });
+</script>
+</body>
+</html>
